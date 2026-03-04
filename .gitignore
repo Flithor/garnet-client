@@ -220,3 +220,10 @@ BenchmarkDotNet.Artifacts/
 
 # Helm chart artifacts
 .cr-release-packages/
+
+# Garnet server data directories (created at runtime)
+/Store/
+/ObjectStore/
+/AOF/
+/Logs/
+/allure-results/
