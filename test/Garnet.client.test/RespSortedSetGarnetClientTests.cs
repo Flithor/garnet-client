@@ -197,7 +197,7 @@ namespace Garnet.client.test
                     for (var ii = 0; ii < numIterations; ++ii)
                     {
                         string name = GetUniqueName(ss, ii);
-                        if (name == String.Empty)
+                        if (name == string.Empty)
                         {
                             Assert.Fail("Concurrency issue, review test: CanDoZaddGarnetMultithread");
                         }

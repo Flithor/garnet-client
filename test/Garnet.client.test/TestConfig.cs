@@ -16,7 +16,7 @@ namespace Garnet.client.test
         /// <summary>
         /// Get the Garnet server endpoint to connect to.
         /// Reads from GARNET_TEST_ENDPOINT environment variable (format: "host:port").
-        /// Defaults to 127.0.0.1:6379.
+        /// Supports both IP addresses and hostnames. Defaults to 127.0.0.1:6379.
         /// </summary>
         public static EndPoint GetEndPoint()
         {
@@ -27,7 +27,10 @@ namespace Garnet.client.test
                 if (lastColon > 0 && int.TryParse(envEndpoint.AsSpan(lastColon + 1), out var port))
                 {
                     var host = envEndpoint[..lastColon];
-                    return new IPEndPoint(IPAddress.Parse(host), port);
+                    // Use IPEndPoint for IP addresses, DnsEndPoint for hostnames
+                    if (IPAddress.TryParse(host, out var ipAddress))
+                        return new IPEndPoint(ipAddress, port);
+                    return new DnsEndPoint(host, port);
                 }
             }
             return new IPEndPoint(IPAddress.Loopback, 6379);
