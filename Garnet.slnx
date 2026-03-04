@@ -24,6 +24,7 @@
     <Project Path="libs/client/Garnet.client.csproj" />
     <Project Path="libs/cluster/Garnet.cluster.csproj" />
     <Project Path="libs/common/Garnet.common.csproj" />
+    <Project Path="libs/Garnet.client.standalone/Garnet.client.standalone.csproj" />
     <Project Path="libs/host/Garnet.host.csproj" />
     <Project Path="libs/resources/Garnet.resources.csproj" />
     <Project Path="libs/server/Garnet.server.csproj" />
@@ -78,6 +79,7 @@
     <File Path="Version.props" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/Garnet.client.test/Garnet.client.test.csproj" />
     <Project Path="test/Garnet.fuzz/Garnet.fuzz.csproj" />
     <Project Path="test/Garnet.test.cluster/Garnet.test.cluster.csproj" />
     <Project Path="test/Garnet.test/Garnet.test.csproj" />

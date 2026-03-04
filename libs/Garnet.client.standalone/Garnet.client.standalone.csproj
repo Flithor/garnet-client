@@ -1,0 +1,156 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Standalone Garnet client library project.
+    All source files are linked from their original locations in the repository
+    (no copies, no project-to-project references).
+
+    Source groups:
+      libs/client/         - Garnet client implementation
+      libs/common/         - Shared networking, memory, and utility types
+                             (LightClient.cs, LightClientTcpNetworkHandler.cs, and
+                              StreamProvider.cs are excluded: they depend on Garnet.server
+                              or Tsavorite.devices which are not part of the client library)
+      libs/storage/…/VarLen/ - SpanByte and SpanByteAndMemory (used by common files)
+      metrics/HdrHistogram/  - Embedded HDR histogram implementation
+  -->
+
+  <PropertyGroup>
+    <AssemblyName>Garnet.client.standalone</AssemblyName>
+    <RootNamespace>Garnet.client</RootNamespace>
+  </PropertyGroup>
+
+  <!-- External package references (no project references) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+  </ItemGroup>
+
+  <!-- ==================== libs/client ==================== -->
+  <ItemGroup>
+    <Compile Include="..\client\ClientSession\AsyncGarnetClientSession.cs"   Link="client\ClientSession\AsyncGarnetClientSession.cs" />
+    <Compile Include="..\client\ClientSession\AsyncPool.cs"                  Link="client\ClientSession\AsyncPool.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSession.cs"        Link="client\ClientSession\GarnetClientSession.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSessionClusterExtensions.cs"   Link="client\ClientSession\GarnetClientSessionClusterExtensions.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSessionIncremental.cs"         Link="client\ClientSession\GarnetClientSessionIncremental.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSessionMigrationExtensions.cs" Link="client\ClientSession\GarnetClientSessionMigrationExtensions.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSessionReplicationExtensions.cs" Link="client\ClientSession\GarnetClientSessionReplicationExtensions.cs" />
+    <Compile Include="..\client\ClientSession\GarnetClientSessionTcpNetworkHandler.cs"  Link="client\ClientSession\GarnetClientSessionTcpNetworkHandler.cs" />
+    <Compile Include="..\client\ClientTcpNetworkSender.cs"                   Link="client\ClientTcpNetworkSender.cs" />
+    <Compile Include="..\client\CompletionEvent.cs"                          Link="client\CompletionEvent.cs" />
+    <Compile Include="..\client\ExceptionTypes.cs"                           Link="client\ExceptionTypes.cs" />
+    <Compile Include="..\client\GarnetClient.cs"                             Link="client\GarnetClient.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientAdminCommands.cs"    Link="client\GarnetClientAPI\GarnetClientAdminCommands.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientBasicRespCommands.cs" Link="client\GarnetClientAPI\GarnetClientBasicRespCommands.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientClusterCommands.cs"  Link="client\GarnetClientAPI\GarnetClientClusterCommands.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientExecuteAPI.cs"       Link="client\GarnetClientAPI\GarnetClientExecuteAPI.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientListCommands.cs"     Link="client\GarnetClientAPI\GarnetClientListCommands.cs" />
+    <Compile Include="..\client\GarnetClientAPI\GarnetClientSortedSetCommands.cs" Link="client\GarnetClientAPI\GarnetClientSortedSetCommands.cs" />
+    <Compile Include="..\client\GarnetClientAPI\SortedSetPairCollection.cs"      Link="client\GarnetClientAPI\SortedSetPairCollection.cs" />
+    <Compile Include="..\client\GarnetClientMetrics.cs"                     Link="client\GarnetClientMetrics.cs" />
+    <Compile Include="..\client\GarnetClientProcessReplies.cs"               Link="client\GarnetClientProcessReplies.cs" />
+    <Compile Include="..\client\GarnetClientTcpNetworkHandler.cs"            Link="client\GarnetClientTcpNetworkHandler.cs" />
+    <Compile Include="..\client\LightEpoch.cs"                               Link="client\LightEpoch.cs" />
+    <Compile Include="..\client\NetworkWriter.cs"                            Link="client\NetworkWriter.cs" />
+    <Compile Include="..\client\PageAsyncResultTypes.cs"                     Link="client\PageAsyncResultTypes.cs" />
+    <Compile Include="..\client\PageOffset.cs"                               Link="client\PageOffset.cs" />
+    <Compile Include="..\client\RespReadResponseUtils.cs"                    Link="client\RespReadResponseUtils.cs" />
+    <Compile Include="..\client\TcsWrapper.cs"                               Link="client\TcsWrapper.cs" />
+    <Compile Include="..\client\Utility.cs"                                  Link="client\Utility.cs" />
+  </ItemGroup>
+
+  <!-- ==================== libs/common ==================== -->
+  <!-- Excluded files:
+       LightClient.cs                - uses Garnet.server namespace
+       LightClientTcpNetworkHandler.cs - defined in Garnet.server namespace
+       LightClientRequest.cs         - depends on LightClient (excluded due to Garnet.server dependency)
+       StreamProvider.cs             - uses Tsavorite.devices (AzureStorageDevice) -->
+  <ItemGroup>
+    <Compile Include="..\common\AsciiUtils.cs"                              Link="common\AsciiUtils.cs" />
+    <Compile Include="..\common\ClientBase.cs"                              Link="common\ClientBase.cs" />
+    <Compile Include="..\common\Collections\ElasticCircularBuffer.cs"       Link="common\Collections\ElasticCircularBuffer.cs" />
+    <Compile Include="..\common\Collections\ReadOptimizedConcurrentSet.cs"  Link="common\Collections\ReadOptimizedConcurrentSet.cs" />
+    <Compile Include="..\common\ConvertUtils.cs"                            Link="common\ConvertUtils.cs" />
+    <Compile Include="..\common\CountingEventSlim.cs"                       Link="common\CountingEventSlim.cs" />
+    <Compile Include="..\common\Crc64.cs"                                   Link="common\Crc64.cs" />
+    <Compile Include="..\common\EnumUtils.cs"                               Link="common\EnumUtils.cs" />
+    <Compile Include="..\common\ExceptionInjectionHelper.cs"                Link="common\ExceptionInjectionHelper.cs" />
+    <Compile Include="..\common\ExceptionInjectionType.cs"                  Link="common\ExceptionInjectionType.cs" />
+    <Compile Include="..\common\FailoverOption.cs"                          Link="common\FailoverOption.cs" />
+    <Compile Include="..\common\FileUtils.cs"                               Link="common\FileUtils.cs" />
+    <Compile Include="..\common\Format.cs"                                  Link="common\Format.cs" />
+    <Compile Include="..\common\GarnetException.cs"                         Link="common\GarnetException.cs" />
+    <Compile Include="..\common\Generator.cs"                               Link="common\Generator.cs" />
+    <Compile Include="..\common\HashSlotUtils.cs"                           Link="common\HashSlotUtils.cs" />
+    <Compile Include="..\common\HashUtils.cs"                               Link="common\HashUtils.cs" />
+    <Compile Include="..\common\Logging\FileLoggerProvider.cs"              Link="common\Logging\FileLoggerProvider.cs" />
+    <Compile Include="..\common\Logging\LogFormatter.cs"                    Link="common\Logging\LogFormatter.cs" />
+    <Compile Include="..\common\Memory\LimitedFixedBufferPool.cs"           Link="common\Memory\LimitedFixedBufferPool.cs" />
+    <Compile Include="..\common\Memory\PoolEntry.cs"                        Link="common\Memory\PoolEntry.cs" />
+    <Compile Include="..\common\Memory\PoolLevel.cs"                        Link="common\Memory\PoolLevel.cs" />
+    <Compile Include="..\common\MemoryResult.cs"                            Link="common\MemoryResult.cs" />
+    <Compile Include="..\common\Metrics\InfoMetricsType.cs"                 Link="common\Metrics\InfoMetricsType.cs" />
+    <Compile Include="..\common\Metrics\LatencyMetricsType.cs"              Link="common\Metrics\LatencyMetricsType.cs" />
+    <Compile Include="..\common\Metrics\MetricsItem.cs"                     Link="common\Metrics\MetricsItem.cs" />
+    <Compile Include="..\common\NetworkBufferSettings.cs"                   Link="common\NetworkBufferSettings.cs" />
+    <Compile Include="..\common\Networking\BatchHeader.cs"                  Link="common\Networking\BatchHeader.cs" />
+    <Compile Include="..\common\Networking\BufferSizeUtils.cs"              Link="common\Networking\BufferSizeUtils.cs" />
+    <Compile Include="..\common\Networking\GarnetSaeaBuffer.cs"             Link="common\Networking\GarnetSaeaBuffer.cs" />
+    <Compile Include="..\common\Networking\GarnetTcpNetworkSender.cs"       Link="common\Networking\GarnetTcpNetworkSender.cs" />
+    <Compile Include="..\common\Networking\IMessageConsumer.cs"             Link="common\Networking\IMessageConsumer.cs" />
+    <Compile Include="..\common\Networking\INetworkHandler.cs"              Link="common\Networking\INetworkHandler.cs" />
+    <Compile Include="..\common\Networking\INetworkSender.cs"               Link="common\Networking\INetworkSender.cs" />
+    <Compile Include="..\common\Networking\IServerHook.cs"                  Link="common\Networking\IServerHook.cs" />
+    <Compile Include="..\common\Networking\LightConcurrentStack.cs"         Link="common\Networking\LightConcurrentStack.cs" />
+    <Compile Include="..\common\Networking\MaxSizeSettings.cs"              Link="common\Networking\MaxSizeSettings.cs" />
+    <Compile Include="..\common\Networking\NetworkHandler.cs"               Link="common\Networking\NetworkHandler.cs" />
+    <Compile Include="..\common\Networking\NetworkHandlerStream.cs"         Link="common\Networking\NetworkHandlerStream.cs" />
+    <Compile Include="..\common\Networking\NetworkSenderBase.cs"            Link="common\Networking\NetworkSenderBase.cs" />
+    <Compile Include="..\common\Networking\TaskToApm.cs"                    Link="common\Networking\TaskToApm.cs" />
+    <Compile Include="..\common\Networking\TcpNetworkHandler.cs"            Link="common\Networking\TcpNetworkHandler.cs" />
+    <Compile Include="..\common\Networking\TcpNetworkHandlerBase.cs"        Link="common\Networking\TcpNetworkHandlerBase.cs" />
+    <Compile Include="..\common\Networking\TlsReaderStatus.cs"              Link="common\Networking\TlsReaderStatus.cs" />
+    <Compile Include="..\common\Networking\WireFormat.cs"                   Link="common\Networking\WireFormat.cs" />
+    <Compile Include="..\common\NumUtils.cs"                                Link="common\NumUtils.cs" />
+    <Compile Include="..\common\Numerics\IBinaryOperator.cs"                Link="common\Numerics\IBinaryOperator.cs" />
+    <Compile Include="..\common\Parsing\RespParsingException.cs"            Link="common\Parsing\RespParsingException.cs" />
+    <Compile Include="..\common\RandomUtils.cs"                             Link="common\RandomUtils.cs" />
+    <Compile Include="..\common\ReadOptimizedLock.cs"                       Link="common\ReadOptimizedLock.cs" />
+    <Compile Include="..\common\RespLengthEncodingUtils.cs"                 Link="common\RespLengthEncodingUtils.cs" />
+    <Compile Include="..\common\RespMemoryWriter.cs"                        Link="common\RespMemoryWriter.cs" />
+    <Compile Include="..\common\RespReadUtils.cs"                           Link="common\RespReadUtils.cs" />
+    <Compile Include="..\common\RespStrings.cs"                             Link="common\RespStrings.cs" />
+    <Compile Include="..\common\RespWriteUtils.cs"                          Link="common\RespWriteUtils.cs" />
+    <Compile Include="..\common\SimpleObjectPool.cs"                        Link="common\SimpleObjectPool.cs" />
+    <Compile Include="..\common\SimpleStack.cs"                             Link="common\SimpleStack.cs" />
+    <Compile Include="..\common\SingleWriterMultiReaderLock.cs"             Link="common\SingleWriterMultiReaderLock.cs" />
+  </ItemGroup>
+
+  <!-- ==================== Tsavorite VarLen types ==================== -->
+  <!-- Only SpanByte and SpanByteAndMemory are needed by the linked source files -->
+  <ItemGroup>
+    <Compile Include="..\storage\Tsavorite\cs\src\core\VarLen\SpanByte.cs"          Link="tsavorite\SpanByte.cs" />
+    <Compile Include="..\storage\Tsavorite\cs\src\core\VarLen\SpanByteAndMemory.cs" Link="tsavorite\SpanByteAndMemory.cs" />
+  </ItemGroup>
+
+  <!-- ==================== metrics/HdrHistogram ==================== -->
+  <ItemGroup>
+    <Compile Include="..\..\metrics\HdrHistogram\HistogramBase.cs"                            Link="hdrhistogram\HistogramBase.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\HistogramExtensions.cs"                      Link="hdrhistogram\HistogramExtensions.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\IRecorder.cs"                                Link="hdrhistogram\IRecorder.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\AbstractHistogramEnumerator.cs"    Link="hdrhistogram\Iteration\AbstractHistogramEnumerator.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\AllValueEnumerable.cs"             Link="hdrhistogram\Iteration\AllValueEnumerable.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\AllValuesEnumerator.cs"            Link="hdrhistogram\Iteration\AllValuesEnumerator.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\HistogramIterationValue.cs"        Link="hdrhistogram\Iteration\HistogramIterationValue.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\PercentileEnumerable.cs"           Link="hdrhistogram\Iteration\PercentileEnumerable.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\PercentileEnumerator.cs"           Link="hdrhistogram\Iteration\PercentileEnumerator.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\RecordedValuesEnumerable.cs"       Link="hdrhistogram\Iteration\RecordedValuesEnumerable.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Iteration\RecordedValuesEnumerator.cs"       Link="hdrhistogram\Iteration\RecordedValuesEnumerator.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\LongConcurrentHistogram.cs"                  Link="hdrhistogram\LongConcurrentHistogram.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\LongHistogram.cs"                            Link="hdrhistogram\LongHistogram.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\OutputScalingFactor.cs"                      Link="hdrhistogram\OutputScalingFactor.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\TimeStamp.cs"                                Link="hdrhistogram\TimeStamp.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Utilities\AtomicLongArray.cs"                Link="hdrhistogram\Utilities\AtomicLongArray.cs" />
+    <Compile Include="..\..\metrics\HdrHistogram\Utilities\WriterReaderPhaser.cs"             Link="hdrhistogram\Utilities\WriterReaderPhaser.cs" />
+  </ItemGroup>
+
+</Project>
